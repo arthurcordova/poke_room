@@ -9,9 +9,18 @@ data class PokeResponse(
     val results: List<Pokemon>
 )
 
+/**
+ * Colocamos a annotation @Entity para identificar como uma table para nosso database.
+ */
 @Entity
 data class Pokemon(
+    /**
+     * @PrimaryKey annotation para identificar qual o atributo que será a chave primaria da tabela
+     */
     @PrimaryKey
+    /**
+     * @ColumnInfo annotation para modificar o node do atributo quando visto da tabela
+     */
     @ColumnInfo(name = "poke_name")
     @SerializedName("name")
     val name: String,

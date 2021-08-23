@@ -11,6 +11,9 @@ import retrofit2.Response
 
 class PokemonRepository(private val context: Context) {
 
+    /**
+     * Instancia do database para utilizarmos dentro do repository
+     */
     private val database = AppDatabase.getDatabase(context)
 
     fun fetchAll(onComplete: (PokeResponse?, String?) -> Unit) {
@@ -31,14 +34,26 @@ class PokemonRepository(private val context: Context) {
         })
     }
 
+    /**
+     * Função que irá receber um lista de Pokemon e irá add no database local
+     */
     fun insertIntoDatabase(items: List<Pokemon>) {
+        /**
+         * chamamos do database o nosso DAO já instanciado
+         */
         val dao = database.pokemonDAO()
+        /**
+         * Percorremos a lista, e para cada elemento add no banco
+         */
         items.forEach { poke ->
             dao.insert(pokemon = poke)
         }
 
     }
 
+    /**
+     * Buscamos todos os Pokemons que já estão dentro do database local
+     */
     fun fetchAllFromDatabase(): List<Pokemon>? {
         val dao = database.pokemonDAO()
         return dao.all()
