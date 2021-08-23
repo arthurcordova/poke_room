@@ -9,10 +9,10 @@ import com.proway.pokemonapp.repository.PokemonRepository
 
 class MainViewModel : ViewModel() {
 
-    val _pokeResponse = MutableLiveData<List<Pokemon>>()
-    val pokeResponse: LiveData<List<Pokemon>> = _pokeResponse
+    private val _pokemons = MutableLiveData<List<Pokemon>>()
+    val pokemons: LiveData<List<Pokemon>> = _pokemons
 
-    val _error = MutableLiveData<String>()
+    private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
     /**
@@ -28,7 +28,7 @@ class MainViewModel : ViewModel() {
 
         repository.fetchAll { response, error ->
             response?.let {
-                _pokeResponse.value = it.results
+                _pokemons.value = it.results
                 /**
                  * Quando recebeu uma lista, chamamos o repository para add ela no database local
                  */
@@ -55,7 +55,7 @@ class MainViewModel : ViewModel() {
          * chamamos os pokemons do servidor.
          */
         if (listOf != null && listOf.isNotEmpty()) {
-            _pokeResponse.value = listOf!!
+            _pokemons.value = listOf!!
         } else {
             fetchAllFromServer(context)
         }

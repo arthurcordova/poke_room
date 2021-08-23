@@ -2,6 +2,7 @@ package com.proway.pokemonapp.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
@@ -14,6 +15,7 @@ data class PokeResponse(
  */
 @Entity
 data class Pokemon(
+
     /**
      * @PrimaryKey annotation para identificar qual o atributo que será a chave primaria da tabela
      */
@@ -27,5 +29,17 @@ data class Pokemon(
 
     @ColumnInfo(name = "poke_url")
     @SerializedName("url")
-    val url: String
-)
+    val url: String,
+) {
+
+//    @Ignore
+//    val id: String by lazy {
+//        extractIdFromUrl()
+//    }
+
+    fun extractIdFromUrl(): String {
+        val listStr = url.split("/")
+        return listStr[6]
+    }
+
+}
