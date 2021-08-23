@@ -24,7 +24,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         binding = MainFragmentBinding.bind(view)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        viewModel.fetchAllFromServer()
+        viewModel.fetchAllFromDatabase(requireContext())
 
     }
 
