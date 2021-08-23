@@ -15,7 +15,6 @@ data class PokeResponse(
  */
 @Entity
 data class Pokemon(
-
     /**
      * @PrimaryKey annotation para identificar qual o atributo que será a chave primaria da tabela
      */
@@ -32,14 +31,11 @@ data class Pokemon(
     val url: String,
 ) {
 
-//    @Ignore
-//    val id: String by lazy {
-//        extractIdFromUrl()
-//    }
 
-    fun extractIdFromUrl(): String {
+    fun extractIdFromUrl(withPads: Boolean = false): String {
         val listStr = url.split("/")
-        return listStr[6]
+        return if (withPads) listStr[6].padStart(4, '0') else listStr[6]
     }
+
 
 }

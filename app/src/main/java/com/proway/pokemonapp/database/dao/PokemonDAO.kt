@@ -21,7 +21,7 @@ interface PokemonDAO {
      * Declaramos a função all() para retornar todos os registros da tabela.
      * O commando que esta dentro do @Query é o reponsável pela busca.
      */
-    @Query("SELECT * FROM Pokemon ORDER BY poke_name")
+    @Query("SELECT * FROM Pokemon")
     fun all(): List<Pokemon>?
 
     /**

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.proway.pokemonapp.R
 import com.proway.pokemonapp.databinding.ItemPokemonBinding
 import com.proway.pokemonapp.model.Pokemon
+import com.proway.pokemonapp.utils.toUpperFirstChar
 
 class PokemonAdapterRV :
     RecyclerView.Adapter<PokemonViewHolder>() {
@@ -41,9 +42,8 @@ class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(pokemon: Pokemon) {
 
-
-        binding.idTextView.text = "#${pokemon.extractIdFromUrl()}"
-        binding.nameTextView.text = pokemon.name
+        binding.idTextView.text = "#${pokemon.extractIdFromUrl(withPads = true)}"
+        binding.nameTextView.text = pokemon.name.toUpperFirstChar()
 
     }
 
