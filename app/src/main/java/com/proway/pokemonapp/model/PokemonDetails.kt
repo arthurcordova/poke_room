@@ -96,7 +96,7 @@ data class PokemonType(
             "fire" -> PokeTypeSetup.FIRE
             "ground" -> PokeTypeSetup.GROUND
             "psychic" -> PokeTypeSetup.PSYCHIC
-            "eletric" -> PokeTypeSetup.ELETRIC
+            "electric" -> PokeTypeSetup.ELECTRIC
             "flying" -> PokeTypeSetup.FLYING
             "ice" -> PokeTypeSetup.ICE
             "rock" -> PokeTypeSetup.ROCK
@@ -124,7 +124,7 @@ enum class PokeTypeSetup(
     FIRE(R.color.bg_type_fire, R.drawable.ic_fire, R.color.type_fire),
     GROUND(R.color.bg_type_ground, R.drawable.ic_ground, R.color.type_ground),
     PSYCHIC(R.color.bg_type_psychic, R.drawable.ic_psychic, R.color.type_psychic),
-    ELETRIC(R.color.bg_type_eletric, R.drawable.ic_electric, R.color.bg_type_eletric),
+    ELECTRIC(R.color.bg_type_eletric, R.drawable.ic_electric, R.color.bg_type_eletric),
     FLYING(R.color.bg_type_flying, R.drawable.ic_flying, R.color.type_flying),
     ICE(R.color.bg_type_ice, R.drawable.ic_ice, R.color.type_ice),
     ROCK(R.color.bg_type_rock, R.drawable.ic_rock, R.color.type_rock),
