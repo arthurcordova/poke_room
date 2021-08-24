@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.proway.pokemonapp.R
 import com.proway.pokemonapp.databinding.ItemPokemonBinding
 import com.proway.pokemonapp.model.Pokemon
@@ -44,7 +45,11 @@ class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         binding.idTextView.text = "#${pokemon.extractIdFromUrl(withPads = true)}"
         binding.nameTextView.text = pokemon.name.toUpperFirstChar()
-
+        pokemon.details?.let {
+            Glide.with(itemView.context)
+                .load(it.sprites.other.artWork?.image)
+                .into(binding.avatarImageView)
+        }
     }
 
 }

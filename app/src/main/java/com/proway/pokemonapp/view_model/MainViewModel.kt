@@ -32,10 +32,23 @@ class MainViewModel : ViewModel() {
                 /**
                  * Quando recebeu uma lista, chamamos o repository para add ela no database local
                  */
-                repository.insertIntoDatabase(it.results)
+                loadPokeDetails(it.results, repository)
             }
             error?.let {
                 _error.value = it
+            }
+        }
+    }
+
+    private fun loadPokeDetails(pokemons: List<Pokemon>, repository: PokemonRepository) {
+        pokemons.forEach { poke ->
+            repository.fetchPokemonDetails(pokeId = poke.extractIdFromUrl()) { details, _ ->
+                details?.let {
+
+                    poke.details = details
+                    repository.insertIntoDatabase(poke)
+
+                }
             }
         }
     }
