@@ -21,6 +21,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/bg_type_normal"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp">
 
@@ -67,13 +68,22 @@
 
                 <ImageView
                     android:id="@+id/imgPattern"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
                     android:src="@drawable/img_pattern"
                     app:layout_constraintEnd_toStartOf="@+id/imgPokeball"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <include
+                    android:id="@+id/typesContainer"
+                    layout="@layout/type_buttons_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/nameTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
