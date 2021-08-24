@@ -36,4 +36,5 @@ data class Pokemon(
         val listStr = url.split("/")
         return if (withPads) listStr[6].padStart(4, '0') else listStr[6]
     }
+
 }

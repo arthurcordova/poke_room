@@ -1,10 +1,9 @@
 package com.proway.pokemonapp.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.proway.pokemonapp.model.Pokemon
+//import com.proway.pokemonapp.model.PokemonItem
+import com.proway.pokemonapp.model.Types
 
 /**
  * Camada responsável em conversar diretamente com a base de dados.
@@ -44,5 +43,14 @@ interface PokemonDAO {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(pokemon: Pokemon)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertType(types: List<Types>)
+
+//    @Transaction
+//    fun insertDetails(pokemonItem: PokemonItem) {
+//        insert(pokemon = pokemonItem.pokemon)
+//        insertType(types = pokemonItem.types)
+//    }
 
 }

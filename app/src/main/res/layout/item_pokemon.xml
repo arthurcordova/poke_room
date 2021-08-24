@@ -14,13 +14,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardItem"
             android:layout_width="match_parent"
             android:layout_height="115dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/teal_200"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp">
 

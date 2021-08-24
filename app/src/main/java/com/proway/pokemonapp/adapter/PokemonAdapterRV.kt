@@ -50,6 +50,12 @@ class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 .load(it.sprites.other.artWork?.image)
                 .into(binding.avatarImageView)
         }
+        val bgColor = pokemon.details.type[0].type.extractBgColor()
+        binding.cardItem.setCardBackgroundColor(bgColor)
+
+
+
+
     }
 
 }

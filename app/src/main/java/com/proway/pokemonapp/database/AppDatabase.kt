@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.proway.pokemonapp.database.dao.PokemonDAO
 import com.proway.pokemonapp.model.*
 
@@ -15,9 +16,10 @@ import com.proway.pokemonapp.model.*
  * ao banco este numero deve ser incrementado)
  */
 @Database(
-    entities = [Pokemon::class, PokemonDetails::class, Sprites::class, Other::class, ArtWork::class],
+    entities = [Pokemon::class, PokemonDetails::class, Sprites::class, Other::class, ArtWork::class, Types::class, PokemonType::class],
     version = 1
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     /**

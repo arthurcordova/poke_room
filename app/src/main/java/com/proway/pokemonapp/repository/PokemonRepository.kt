@@ -5,6 +5,7 @@ import com.proway.pokemonapp.database.AppDatabase
 import com.proway.pokemonapp.model.PokeResponse
 import com.proway.pokemonapp.model.Pokemon
 import com.proway.pokemonapp.model.PokemonDetails
+//import com.proway.pokemonapp.model.PokemonItem
 import com.proway.pokemonapp.services.RefrofitService
 import retrofit2.Call
 import retrofit2.Callback
@@ -82,7 +83,7 @@ class PokemonRepository(private val context: Context) {
      */
     fun insertIntoDatabase(pokemon: Pokemon) {
         val dao = database.pokemonDAO()
-        dao.insert(pokemon = pokemon)
+        dao.insert(pokemon)
     }
 
     /**
