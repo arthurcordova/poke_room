@@ -49,7 +49,7 @@ interface PokemonDAO {
 
 
     @Query("SELECT * FROM pokemon WHERE poke_name LIKE '%' || :query || '%'")
-    fun fetchFiltered(query: String) : List<Pokemon>
+    fun fetchFiltered(query: String): List<Pokemon>
 
 
 //    @Transaction

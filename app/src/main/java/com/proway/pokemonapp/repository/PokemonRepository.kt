@@ -60,24 +60,6 @@ class PokemonRepository(private val context: Context) {
         })
     }
 
-
-    /**
-     * Função que irá receber um lista de Pokemon e irá add no database local
-     */
-    fun insertIntoDatabase(items: List<Pokemon>) {
-        /**
-         * chamamos do database o nosso DAO já instanciado
-         */
-        val dao = database.pokemonDAO()
-        /**
-         * Percorremos a lista, e para cada elemento add no banco
-         */
-        items.forEach { poke ->
-            dao.insert(pokemon = poke)
-        }
-
-    }
-
     /**
      * Função que irá receber Pokemon e irá add no database local
      */
@@ -92,6 +74,14 @@ class PokemonRepository(private val context: Context) {
     fun fetchAllFromDatabase(): List<Pokemon>? {
         val dao = database.pokemonDAO()
         return dao.all()
+    }
+
+    /**
+     * Buscamos todos os Pokemons que já estão dentro do database local
+     */
+    fun fetchAllFromDatabaseWithFilter(query: String): List<Pokemon>? {
+        val dao = database.pokemonDAO()
+        return dao.fetchFiltered(query.lowercase())
     }
 
 }
