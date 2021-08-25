@@ -1,5 +1,6 @@
 package com.proway.pokemonapp.view
 
+import android.content.res.Resources
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
@@ -8,10 +9,14 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.proway.pokemonapp.R
 import com.proway.pokemonapp.adapter.PokemonAdapterRV
 import com.proway.pokemonapp.databinding.MainFragmentBinding
 import com.proway.pokemonapp.model.Pokemon
+import com.proway.pokemonapp.view.dialogs.FiltersFragment
 import com.proway.pokemonapp.view_model.MainViewModel
 
 class MainFragment : Fragment(R.layout.main_fragment) {
@@ -61,6 +66,14 @@ class MainFragment : Fragment(R.layout.main_fragment) {
             }
         })
 
+        binding.buttonFilters.setOnClickListener { showBottomSheetDialog() }
+
+
+    }
+
+    fun showBottomSheetDialog() {
+        val bottomSheet = FiltersFragment.newInstance()
+        bottomSheet.show(parentFragmentManager, "dialog_filters")
 
     }
 

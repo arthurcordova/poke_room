@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">PokemonApp</string>
     <string name="search">Search</string>
+    <string name="filters">Filters</string>
+    <string name="filter_subtitle">Use advanced search to explore Pokémon by type, weakness, height and more!</string>
+    <string name="types">Types</string>
 </resources>
