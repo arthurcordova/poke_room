@@ -16,6 +16,15 @@ object RefrofitService {
 
 
     fun getPokeService(): PokeService {
+        /**
+         * Criando novo pokemon
+         */
+        /**
+         * Criando mais um novo pokemon
+         */
+        /**
+         * Versao de release para setembro
+         */
         return retrofit.create(PokeService::class.java)
     }
 }
