@@ -50,6 +50,9 @@ interface PokemonDAO {
     /**
      * Criado query para buscar pokemons por nome
      */
+    /**
+     * Criado query para buscar pokemons por nome
+     */
     @Query("SELECT * FROM pokemon WHERE poke_name LIKE '%' || :query || '%'")
     fun fetchFiltered(query: String): List<Pokemon>
 
