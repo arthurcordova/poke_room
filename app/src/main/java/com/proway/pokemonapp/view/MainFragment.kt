@@ -68,7 +68,6 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
         binding.buttonFilters.setOnClickListener { showBottomSheetDialog() }
 
-
     }
 
     fun showBottomSheetDialog() {

@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "PokemonApp"
 include ':app'
+include ':module_github'

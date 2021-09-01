@@ -49,6 +49,7 @@
             android:layout_marginEnd="12dp"
             android:fontFamily="sans-serif-black"
             android:gravity="start"
+            style="@style/CustomShapeAppearanceBottomSheetDialog"
             android:text="@string/types"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -57,9 +58,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/typesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/type_item_buttom" />
+
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="100dp"/>
+            android:layout_height="100dp" />
 
     </LinearLayout>
 
