@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PokemonRepository(private val context: Context) {
+class PokemonRepository(val context: Context) {
 
     /**
      * Instancia do database para utilizarmos dentro do repository
@@ -24,15 +24,19 @@ class PokemonRepository(private val context: Context) {
 
     suspend fun fetchAll() : List<Pokemon>? {
         return withContext(CoroutineScope(Dispatchers.Default).coroutineContext) {
+            // Busca todos os pokemons (id & name)
             val response = service.getAll()
             val responsePokemon = processData(response)
+            // Percorre todos os results para buscar os details
             responsePokemon?.results?.forEach {
+                // Para a thread para cara pokemon, irá buscar os details
                 fetchPokemonDetails(it.extractIdFromUrl())?.let { details ->
+                    // Injeta o detail dentro de cada elemento da lista
                     it.details = details
                 }
             }
+            // Retornar a lista de pokemons com os detalhes carregados
             responsePokemon?.results
-
         }
     }
 
