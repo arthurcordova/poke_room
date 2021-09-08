@@ -7,6 +7,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -33,6 +35,10 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         adapter.update(pokemons)
     }
 
+    private val observerLoading = Observer<Boolean> { isLoading ->
+        binding.progressBar.visibility = if (isLoading) VISIBLE else INVISIBLE
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = MainFragmentBinding.bind(view)
@@ -41,30 +47,30 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         binding.pokemonRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.pokemonRecyclerView.adapter = adapter
 
-
         viewModel.pokemons.observe(viewLifecycleOwner, observerPokemons)
-        viewModel.fetchAllFromDatabase(requireContext())
+        viewModel.isLoading.observe(viewLifecycleOwner, observerLoading)
+        viewModel.fetchAllFromServer(requireContext())
 
-        binding.searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                p0?.let {
-                    if (it.length > 2) {
-                        viewModel.fetchFilteredFromDatabase(requireContext(), it.toString())
-                    }
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                p0?.let {
-                    if (it.isEmpty()) {
-                        viewModel.fetchAllFromDatabase(requireContext())
-                    }
-                }
-            }
-        })
+//        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                p0?.let {
+//                    if (it.length > 2) {
+//                        viewModel.fetchFilteredFromDatabase(requireContext(), it.toString())
+//                    }
+//                }
+//            }
+//
+//            override fun afterTextChanged(p0: Editable?) {
+//                p0?.let {
+//                    if (it.isEmpty()) {
+//                        viewModel.fetchAllFromDatabase(requireContext())
+//                    }
+//                }
+//            }
+//        })
 
         binding.buttonFilters.setOnClickListener { showBottomSheetDialog() }
 

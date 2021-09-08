@@ -7,6 +7,9 @@ import com.proway.pokemonapp.model.Pokemon
 import com.proway.pokemonapp.model.PokemonDetails
 //import com.proway.pokemonapp.model.PokemonItem
 import com.proway.pokemonapp.services.RefrofitService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,45 +22,33 @@ class PokemonRepository(private val context: Context) {
     private val database = AppDatabase.getDatabase(context)
     val service = RefrofitService.getPokeService()
 
-    fun fetchAll(onComplete: (PokeResponse?, String?) -> Unit) {
-        val call = service.getAll()
-        call.enqueue(object : Callback<PokeResponse> {
-            override fun onResponse(call: Call<PokeResponse>, response: Response<PokeResponse>) {
-                if (response.body() != null) {
-                    onComplete(response.body(), null)
-                } else {
-                    onComplete(null, "Nenhum pokemon encontrado")
+    suspend fun fetchAll() : List<Pokemon>? {
+        return withContext(CoroutineScope(Dispatchers.Default).coroutineContext) {
+            val response = service.getAll()
+            val responsePokemon = processData(response)
+            responsePokemon?.results?.forEach {
+                fetchPokemonDetails(it.extractIdFromUrl())?.let { details ->
+                    it.details = details
                 }
             }
+            responsePokemon?.results
 
-            override fun onFailure(call: Call<PokeResponse>, t: Throwable) {
-                onComplete(null, t.message)
-            }
-        })
+        }
+    }
+
+    private fun <T> processData(response: Response<T>): T? {
+        return if (response.isSuccessful) response.body() else null
     }
 
     /**
      * Irá retornar os detalhes do pokemon
      * @param pokeId String - id do pokemon que extraimos da url no primeiro service
      */
-    fun fetchPokemonDetails(pokeId: String, onComplete: (PokemonDetails?, String?) -> Unit) {
-        val call = service.getDetails(pokeId)
-        call.enqueue(object : Callback<PokemonDetails> {
-            override fun onResponse(
-                call: Call<PokemonDetails>,
-                response: Response<PokemonDetails>
-            ) {
-                if (response.body() != null) {
-                    onComplete(response.body(), null)
-                } else {
-                    onComplete(null, "Nenhum pokemon encontrado")
-                }
-            }
-
-            override fun onFailure(call: Call<PokemonDetails>, t: Throwable) {
-                onComplete(null, t.message)
-            }
-        })
+    private suspend fun fetchPokemonDetails(pokeId: String) : PokemonDetails? {
+        return withContext(CoroutineScope(Dispatchers.Default).coroutineContext) {
+            val response = service.getDetails(pokeId)
+            processData(response)
+        }
     }
 
     /**

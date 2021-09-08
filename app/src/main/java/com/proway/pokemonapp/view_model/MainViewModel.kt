@@ -4,8 +4,13 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.proway.pokemonapp.model.Pokemon
 import com.proway.pokemonapp.repository.PokemonRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel : ViewModel() {
 
@@ -15,40 +20,26 @@ class MainViewModel : ViewModel() {
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     /**
      * Função que chamamos somente interna dentro do viewmodel.
      * Irá buscar da API a lista de pokemons. Após receber os dados
      * insere no banco local a lista que recebeu.
      */
-    private fun fetchAllFromServer(context: Context) {
+    fun fetchAllFromServer(context: Context) {
         /**
          * Instaciamos o Repository
          */
         val repository = PokemonRepository(context)
 
-        repository.fetchAll { response, error ->
-            response?.let {
-                _pokemons.value = it.results
-                /**
-                 * Quando recebeu uma lista, chamamos o repository para add ela no database local
-                 */
-                loadPokeDetails(it.results, repository)
-            }
-            error?.let {
-                _error.value = it
-            }
-        }
-    }
+        _isLoading.value = true
 
-    private fun loadPokeDetails(pokemons: List<Pokemon>, repository: PokemonRepository) {
-        pokemons.forEach { poke ->
-            repository.fetchPokemonDetails(pokeId = poke.extractIdFromUrl()) { details, _ ->
-                details?.let {
-
-                    poke.details = details
-                    repository.insertIntoDatabase(poke)
-
-                }
+        viewModelScope.launch {
+            repository.fetchAll()?.let { pokemons ->
+                _isLoading.value = false
+                _pokemons.value = pokemons
             }
         }
     }
@@ -75,12 +66,12 @@ class MainViewModel : ViewModel() {
 
     }
 
-    fun fetchFilteredFromDatabase(context: Context, query: String) {
-        val repository = PokemonRepository(context)
-        val filteredList = repository.fetchAllFromDatabaseWithFilter(query)
-        filteredList?.let {
-            _pokemons.value = it
-        }
-    }
+//    fun fetchFilteredFromDatabase(context: Context, query: String) {
+//        val repository = PokemonRepository(context)
+//        val filteredList = repository.fetchAllFromDatabaseWithFilter(query)
+//        filteredList?.let {
+//            _pokemons.value = it
+//        }
+//    }
 
 }
