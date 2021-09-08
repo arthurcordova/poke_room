@@ -31,7 +31,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     private lateinit var binding: MainFragmentBinding
     private val adapter = PokemonAdapterRV()
 
-    private val observerPokemons = Observer<List<Pokemon>> { pokemons ->
+    private val observerPokemons = Observer<List<Pokemon>?> { pokemons ->
         adapter.update(pokemons)
     }
 
@@ -49,28 +49,28 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
         viewModel.pokemons.observe(viewLifecycleOwner, observerPokemons)
         viewModel.isLoading.observe(viewLifecycleOwner, observerLoading)
-        viewModel.fetchAllFromServer(requireContext())
+        viewModel.fetchAllPokemons(requireContext())
 
-//        binding.searchEditText.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                p0?.let {
-//                    if (it.length > 2) {
-//                        viewModel.fetchFilteredFromDatabase(requireContext(), it.toString())
-//                    }
-//                }
-//            }
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//                p0?.let {
-//                    if (it.isEmpty()) {
-//                        viewModel.fetchAllFromDatabase(requireContext())
-//                    }
-//                }
-//            }
-//        })
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                p0?.let {
+                    if (it.length > 2) {
+                        viewModel.fetchFilteredFromDatabase(requireContext(), it.toString())
+                    }
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                p0?.let {
+                    if (it.isEmpty()) {
+                        viewModel.fetchAllPokemons(requireContext())
+                    }
+                }
+            }
+        })
 
         binding.buttonFilters.setOnClickListener { showBottomSheetDialog() }
 

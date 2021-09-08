@@ -1,17 +1,14 @@
 package com.proway.pokemonapp.repository
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.proway.pokemonapp.database.AppDatabase
-import com.proway.pokemonapp.model.PokeResponse
 import com.proway.pokemonapp.model.Pokemon
 import com.proway.pokemonapp.model.PokemonDetails
-//import com.proway.pokemonapp.model.PokemonItem
 import com.proway.pokemonapp.services.RefrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 
 class PokemonRepository(val context: Context) {
@@ -25,18 +22,26 @@ class PokemonRepository(val context: Context) {
     suspend fun fetchAll() : List<Pokemon>? {
         return withContext(CoroutineScope(Dispatchers.Default).coroutineContext) {
             // Busca todos os pokemons (id & name)
-            val response = service.getAll()
-            val responsePokemon = processData(response)
-            // Percorre todos os results para buscar os details
-            responsePokemon?.results?.forEach {
-                // Para a thread para cara pokemon, irá buscar os details
-                fetchPokemonDetails(it.extractIdFromUrl())?.let { details ->
-                    // Injeta o detail dentro de cada elemento da lista
-                    it.details = details
+            val dataFromDb = fetchAllFromDatabase()
+            if (dataFromDb == null ) {
+                val response = service.getAll()
+                val responsePokemon = processData(response)
+                // Percorre todos os results para buscar os details
+                responsePokemon?.results?.forEach {
+                    // Para a thread para cara pokemon, irá buscar os details
+                    fetchPokemonDetails(it.extractIdFromUrl())?.let { details ->
+                        // Injeta o detail dentro de cada elemento da lista
+                        it.details = details
+                    }
                 }
+                // Retornar a lista de pokemons com os detalhes carregados
+                responsePokemon?.results?.let {
+                    insertIntoDatabase(it)
+                }
+                fetchAllFromDatabase()
+            } else {
+                dataFromDb
             }
-            // Retornar a lista de pokemons com os detalhes carregados
-            responsePokemon?.results
         }
     }
 
@@ -58,7 +63,7 @@ class PokemonRepository(val context: Context) {
     /**
      * Função que irá receber Pokemon e irá add no database local
      */
-    fun insertIntoDatabase(pokemon: Pokemon) {
+    suspend fun insertIntoDatabase(pokemon: List<Pokemon>) {
         val dao = database.pokemonDAO()
         dao.insert(pokemon)
     }
@@ -66,7 +71,7 @@ class PokemonRepository(val context: Context) {
     /**
      * Buscamos todos os Pokemons que já estão dentro do database local
      */
-    fun fetchAllFromDatabase(): List<Pokemon>? {
+    suspend fun fetchAllFromDatabase(): List<Pokemon>? {
         val dao = database.pokemonDAO()
         return dao.all()
     }

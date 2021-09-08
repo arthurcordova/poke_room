@@ -42,7 +42,7 @@ interface PokemonDAO {
      * onConflict server para validar quando o insert identifica algum resigtro duplicado.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(pokemon: Pokemon)
+    fun insert(pokemon: List<Pokemon>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertType(types: List<Types>)
